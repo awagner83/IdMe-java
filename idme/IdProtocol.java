@@ -7,14 +7,14 @@ package idme;
  */
 class IdProtocol {
 
-    private SynchronizedCounter counter = null;
+    private final SynchronizedCounter counter;
 
     public IdProtocol(SynchronizedCounter counter) {
         this.counter = counter;
     }
 
     /**
-     * Given a request (input string), return the appropriate reply-string.
+     * Given a request string, return the appropriate reply-string.
      */
     public String getReply(String input) {
         String reply = null;

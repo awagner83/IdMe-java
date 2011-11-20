@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public class IdServer {
 
-    private SynchronizedCounter counter = null;
+    private final SynchronizedCounter counter;
     private ServerSocket socket = null;
 
     /**
