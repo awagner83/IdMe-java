@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public class IdServer {
 
-    private int currentId = 0;
+    private SynchronizedCounter counter = null;
     private ServerSocket socket = null;
 
     /**
@@ -19,6 +19,8 @@ public class IdServer {
      * @throws IOException (failed socket close)
      */
     public IdServer(int port) throws IOException {
+        this.counter = new SynchronizedCounter(0);
+
         try {
             socket = new ServerSocket(port);
             acceptLoop();
@@ -33,7 +35,9 @@ public class IdServer {
     public void acceptLoop() throws IOException {
         System.err.println("Beginning to accept connections.");
         while (true) {
-            new Thread(new WorkerRunnable(socket.accept())).start();
+            new Thread(
+                    new WorkerRunnable(socket.accept(), counter)
+            ).start();
         }
     }
 
