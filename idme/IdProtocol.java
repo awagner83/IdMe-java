@@ -21,6 +21,8 @@ class IdProtocol {
 
         if (input.equals("GET")) {
             reply = Integer.toString(counter.next());
+        } else if (input.equals("CURRENT")) {
+            reply = Integer.toString(counter.current());
         } else if (isQuit(input)) {
             reply = "Goodbye!";
         } else {
