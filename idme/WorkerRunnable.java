@@ -26,9 +26,14 @@ public class WorkerRunnable implements Runnable {
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
             String inputLine;
+            IdProtocol proto = new IdProtocol(counter);
 
             while ((inputLine = in.readLine()) != null) {
-                out.println(Integer.toString(counter.next()));
+                out.println(proto.getReply(inputLine));
+
+                if (proto.isQuit(inputLine)) {
+                    break;
+                }
             }
 
             out.close();
