@@ -33,7 +33,7 @@ public class IdServer {
     public void acceptLoop() throws IOException {
         System.err.println("Beginning to accept connections.");
         while (true) {
-            new WorkerThread(socket.accept()).start();
+            new Thread(new WorkerRunnable(socket.accept())).start();
         }
     }
 
