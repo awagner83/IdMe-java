@@ -19,7 +19,8 @@ public class IdServer {
      * @throws IOException (failed socket close)
      */
     public IdServer(int port) throws IOException {
-        this.counter = new SynchronizedCounter(0);
+        counter = new SynchronizedCounter(0);
+        counter.registerCallback(new CounterSyncCallback("counter.state"));
 
         try {
             socket = new ServerSocket(port);
@@ -39,6 +40,23 @@ public class IdServer {
                     new WorkerRunnable(socket.accept(), counter)
             ).start();
         }
+    }
+
+    /**
+     * Callback for writing state of counter to disk.
+     */
+    private class CounterSyncCallback implements Callback {
+
+        private String filename;
+
+        public CounterSyncCallback(String filename) {
+            this.filename = filename;
+        }
+
+        public void run(int counter, int checkpoint) {
+            System.out.println(String.format("Saving to %s", filename));
+        }
+
     }
 
 }
