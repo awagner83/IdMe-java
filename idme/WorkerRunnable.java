@@ -19,11 +19,12 @@ public class WorkerRunnable implements Runnable {
     }
 
     public void run() {
-        System.err.println("Starting work that worker does.");
+        PrintWriter out = null;
+        BufferedReader in = null;
+
         try {
-            PrintWriter out = new PrintWriter(
-                    socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
             String inputLine;
             IdProtocol proto = new IdProtocol(counter);
@@ -36,11 +37,26 @@ public class WorkerRunnable implements Runnable {
                 }
             }
 
-            out.close();
-            in.close();
-            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (out != null) out.close();
+
+            // I'm not sure all of these try/except blocks are
+            // are necessary, however, keeping the closes in the
+            // 'try' seems like I'd get myself into trouble if an
+            // except *is* raised... things won't get close then.
+            try {
+                if (in != null) in.close();
+            } catch (IOException e) {
+                // I don't know what I should do.. log an error?
+            }
+
+            try {
+                if (socket != null) socket.close();
+            } catch (IOException e) {
+                // Ditto
+            }
         }
     }
 
