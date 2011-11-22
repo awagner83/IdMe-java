@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            IdServer server = new IdServer(8888);
+            IdServer server = new IdServer(8888, "counter.txt");
         } catch (IOException e) {
             System.err.println(
                     "Uh oh, things may not have shut down properly"

@@ -35,6 +35,10 @@ public class SynchronizedCounter {
         return count;
     }
 
+    public synchronized int current() {
+        return count;
+    }
+
     public synchronized String statusString() {
         return String.format("Current: %s; Next Checkpoint: %s",
                 count, nextCheckpoint);
